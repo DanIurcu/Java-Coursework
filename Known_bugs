@@ -1,1 +1,4 @@
-1. After hovering the mouse over the right side buttons, to display the description of the button, the whole app seems to start glitching, inserting pics randomly? the fuck?
+1. After hovering the mouse over the right side buttons, to display the description of the 
+button, the whole app seems to start glitching, inserting pics randomly? the fuck?
+2. Adding a new note fucks up the format, and does not count for the note ID, it just keeps
+adding notes with the note.id=1
