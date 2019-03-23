@@ -211,6 +211,17 @@ public class Coursework extends JFrame implements ActionListener, KeyListener {
         toolBar.add(button);
         
         toolBar.addSeparator();
+        button = cc.makeNavigationButton("Properties", "AddCoursework",
+                "Add a Coursework for this Course.",
+                "Add Coursework");
+        toolBar.add(button);
+        
+        button = cc.makeNavigationButton("Numbered List", "AddRequirement",
+                "Add a requirement for this coursework.",
+                "Add requirement");
+        toolBar.add(button);
+        
+        toolBar.addSeparator();
         button = cc.makeNavigationButton("exit", "Exit",
                 "Exit from this program.",
                 "Exit");
