@@ -9,7 +9,7 @@ import java.util.ArrayList;
 
 /**
  *
- * @author Danny
+ * @author Danny & Dan Iurcu
  */
 public class CourseworkOverview extends CommonCode {
      public ArrayList<Note> courseworkOverview = new ArrayList<>();
