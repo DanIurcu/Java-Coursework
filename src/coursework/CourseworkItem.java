@@ -17,7 +17,7 @@ import java.util.ArrayList;
 import javax.swing.JOptionPane;
 /**
  *
- * @author Danny
+ * @author Danny & Dan Iurcu
  */
 public class CourseworkItem extends CommonCode {
      public ArrayList<Note> coursworkItem = new ArrayList<>();

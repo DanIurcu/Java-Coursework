@@ -24,7 +24,7 @@ import javax.swing.JButton;
 import javax.swing.JMenuItem;
 /**
  *
- * @author Danny
+ * @author Danny & Dan Iurcu
  */
 public class CommonCode {
     // These allow the system date to be accessed in ordered, UK and US formats.

@@ -7,7 +7,7 @@ package coursework;
 
 /**
  *
- * @author Danny
+ * @author Danny & Dan Iurcu
  */
 public class Note extends CommonCode {
     private int noteID = 0;

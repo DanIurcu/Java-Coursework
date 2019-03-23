@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.io.IOException;
 /**
  *
- * @author Danny
+ * @author Danny & Dan Iurcu
  */
 class AllNotes extends CommonCode {
     
@@ -47,7 +47,8 @@ class AllNotes extends CommonCode {
     
     public void addNote(int maxID, String course, String note) {
         Note myNote = new Note(maxID, course, note);
-        allNotes.add(myNote);writeAllNotes();
+        allNotes.add(myNote);
+        writeAllNotes();
     }
     
     public ArrayList<Note> getAllNotes() {
@@ -84,5 +85,54 @@ class AllNotes extends CommonCode {
            noteList += allNotes.get(i).getNote() + "\n";
        }
        return searchAllNotesByKeyword(noteList,i+1,s);
+    }
+    
+    public int CountOccurencesInCourse(String SearchText,String Course,int index,int counter){
+        if(index<allNotes.size()){
+            if(allNotes.get(index).getCourse().contains(Course)){
+                if(allNotes.get(index).getNote().contains(SearchText)){
+                    counter=CountOccurencesInCourse(SearchText,Course,index+1,counter+1);
+                }
+                else{
+                    counter=CountOccurencesInCourse(SearchText,Course,index+1,counter);
+                }
+            }       
+        return counter;
+        }
+        else{
+            return counter;
+        }
+    }
+    
+    public String MostCommonDate(){
+        String Temp1="";
+        String Temp2="";
+        String Date1[]=new String[2];
+        String Date2[]=new String[2];
+        String Result="";
+        int i=0;
+        int j=0;
+        int Counter=0;
+        int MaxOccurances=0;
+        while(i<allNotes.size()){
+            j=i+1;
+            Counter=0;
+            Temp1=allNotes.get(i).getDayte().toString();
+            Date1=Temp1.split(" ",2);
+            while(j<allNotes.size()){
+                Temp2=allNotes.get(j).getDayte().toString();
+                Date2=Temp2.split(" ",2);
+                if(Date1[0].equals(Date2[0])){
+                    Counter++;
+                    }
+                j++;
+            }
+            if(MaxOccurances<Counter){
+                MaxOccurances=Counter;
+                Result=Date1[0];
+            }
+            i++;      
+        }
+        return Result;
     }
 }

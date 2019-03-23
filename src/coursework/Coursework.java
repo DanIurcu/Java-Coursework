@@ -43,7 +43,7 @@ import javax.swing.JToolBar;
 
 /**
  *
- * @author Danny
+ * @author Danny & Dan Iurcu
  */
 public class Coursework extends JFrame implements ActionListener, KeyListener {
     
@@ -63,7 +63,7 @@ public class Coursework extends JFrame implements ActionListener, KeyListener {
     
     public static void main(String[] args) {
         // This is required for the coursework.
-        JOptionPane.showMessageDialog(null, "Danny Roberts and Dan Iurcu");
+        JOptionPane.showMessageDialog(null, "     This Coursework Project was"+"\n made by Danny Roberts and Dan Iurcu");
         Coursework prg = new Coursework();
     }
 
@@ -81,39 +81,40 @@ public class Coursework extends JFrame implements ActionListener, KeyListener {
             txtNewNote.setText("");
         }
         if ("Close".equals(ae.getActionCommand())){
-            txtNewNote.setText("");
+            txtDisplayNotes.setText("");
         }
         if ("Exit".equals(ae.getActionCommand())){
             System.exit(0);
         }
-        
         if ("Course".equals(ae.getActionCommand())) {
             crse = courseList.getSelectedItem().toString();
             System.out.println(crse);
         }
-        
-        if ("addCourse".equals(ae.getActionCommand())) {
-            
+        if ("addCourse".equals(ae.getActionCommand())) {   
             courseList.addItem(courseworkItem.addCourse());
         }
-        
         if ("deleteCourse".equals(ae.getActionCommand())) {
            courseworkItem.deleteCourse(String.valueOf(courseList.getSelectedItem()));
            courseList.removeItem(courseList.getSelectedItem());
         }
-        
         if ("amendCourse".equals(ae.getActionCommand())) {
-            String NewName=null;
-            NewName=courseworkItem.amendCourse(courseList.getSelectedItem().toString());
+            String NewName=courseworkItem.amendCourse(courseList.getSelectedItem().toString());
             courseList.removeItem(courseList.getSelectedItem());
             courseList.addItem(NewName);
         }
-        
         if ("SearchKeyword".equals(ae.getActionCommand())){
             String lyst = allNotes.searchAllNotesByKeyword("", 0, search.getText());
             txtDisplayNotes.setText(lyst);
         }
-     
+        if ("SearchOccurences".equals(ae.getActionCommand())) {
+            String Cour=courseList.getSelectedItem().toString();
+            int Counting=allNotes.CountOccurencesInCourse(search.getText(),Cour,0,0);
+            txtDisplayNotes.setText("The number of Occurences in the "+Cour+" Course, of the word "+ search.getText()+ " is "+Counting);
+        }
+        if ("MostCommonDate".equals(ae.getActionCommand())) {
+            String ResultDate=allNotes.MostCommonDate();
+            txtDisplayNotes.setText("The date on which the most number of notes were made is "+ResultDate);
+        }
     }
 
     @Override
@@ -132,7 +133,6 @@ public class Coursework extends JFrame implements ActionListener, KeyListener {
     }
     
     private void model() {
-        
         
         showAllCrse();
         crse = course.get(0);
@@ -203,10 +203,12 @@ public class Coursework extends JFrame implements ActionListener, KeyListener {
         button = cc.makeNavigationButton("Create", "NewNote",
                 "Create a new note.",
                 "New");
+        
         toolBar.add(button);
         button = cc.makeNavigationButton("closed door", "Close",
                 "Close this note.",
                 "Close");
+        
         toolBar.add(button);
         toolBar.addSeparator();
         button = cc.makeNavigationButton("exit", "Exit",
@@ -226,6 +228,18 @@ public class Coursework extends JFrame implements ActionListener, KeyListener {
         toolBar.add(search);
         toolBar.addSeparator();
         button = cc.makeNavigationButton("search", "SearchKeyword","Search for this text.","Search");
+        toolBar.add(button);
+        
+        toolBar.addSeparator();
+        button = cc.makeNavigationButton("Add to basket", "SearchOccurences",
+                "Search Occurences",
+                "SO");
+        toolBar.add(button);
+        
+        toolBar.addSeparator();
+        button = cc.makeNavigationButton("Card file", "MostCommonDate",
+        "Show the date on which the most number of notes were created",
+        "Most Common Date");
         toolBar.add(button);
         
         add(toolBar, BorderLayout.NORTH);
@@ -263,55 +277,6 @@ public class Coursework extends JFrame implements ActionListener, KeyListener {
     private void controller() {
         addAllNotes();
     }
-    
-   /* protected JMenuItem makeMenuItem(
-            String txt,
-            String actionCommand,
-            String toolTipText,
-            Font fnt){
-        JMenuItem mnuItem = new JMenuItem();
-        mnuItem.setText(txt);
-        mnuItem.setActionCommand(actionCommand);
-        mnuItem.setToolTipText(toolTipText);
-        mnuItem.setFont(fnt);
-        mnuItem.addActionListener(this);
-        
-        return mnuItem;
-    }
-    
-   protected JButton makeButton(
-            String imageName,
-            String actionCommand,
-            String toolTipText,
-            String altText) {
-
-        //Create and initialize the button.
-        JButton button = new JButton();
-        button.setToolTipText(toolTipText);
-        button.setActionCommand(actionCommand);
-        button.addActionListener(this);
-
-        //Look for the image.
-        String imgLocation = System.getProperty("user.dir")
-                + "\\icons\\"
-                + imageName
-                + ".png";
-
-        File fyle = new File(imgLocation);
-        if (fyle.exists() && !fyle.isDirectory()) {
-            // image found
-            Icon img;
-            img = new ImageIcon(imgLocation);
-            button.setIcon(img);
-        } else {
-
-            // image NOT found
-            button.setText(altText);
-            System.err.println("Resource not found: " + imgLocation);
-        }
-
-        return button;
-    }*/
 
     private void addNote(String text) {
         allNotes.addNote(allNotes.getMaxID(), crse, text);
@@ -353,7 +318,7 @@ public class Coursework extends JFrame implements ActionListener, KeyListener {
         txtDisplayNotes.setText(txtNotes);
     }
     
-    private String getDateAndTime() {
+   /* private String getDateAndTime() {
         String UK_DATE_FORMAT_NOW = "dd-MM-yyyy HH:mm:ss";
         String ukDateAndTime;
         
@@ -361,6 +326,6 @@ public class Coursework extends JFrame implements ActionListener, KeyListener {
         SimpleDateFormat uksdf = new SimpleDateFormat(UK_DATE_FORMAT_NOW);
         ukDateAndTime = uksdf.format(cal.getTime());
         return ukDateAndTime;
-    }
+    }*/
 
 }
