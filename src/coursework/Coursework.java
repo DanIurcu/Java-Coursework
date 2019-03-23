@@ -83,6 +83,13 @@ public class Coursework extends JFrame implements ActionListener, KeyListener {
         if ("Close".equals(ae.getActionCommand())){
             txtDisplayNotes.setText("");
         }
+        if ("EditNote".equals(ae.getActionCommand())){
+            txtDisplayNotes.setEditable(true);
+        }
+        if ("SaveNote".equals(ae.getActionCommand())){
+            txtDisplayNotes.setEditable(false);
+            allNotes.SaveEdittedNotes(txtDisplayNotes.getText(),courseList.getSelectedItem().toString());
+        }
         if ("Exit".equals(ae.getActionCommand())){
             System.exit(0);
         }
@@ -135,24 +142,7 @@ public class Coursework extends JFrame implements ActionListener, KeyListener {
     private void model() {
         
         showAllCrse();
-        crse = course.get(0);
         
-        /*// Take these out AFTER you have created the file.
-        Note nt = new Note();
-        nt.setNoteID(1);
-        nt.setDayte(getDateAndTime());
-        nt.setCourse(crse);
-        nt.setNote("Arrays are of fixed length and are inflexible.");
-        allNotes.addNote(nt.getNoteID(), nt.getCourse(), nt.getNote());
-
-        // Take these out AFTER you have created the file.
-        nt = new Note();
-        nt.setNoteID(2);
-        nt.setDayte(getDateAndTime());
-        nt.setCourse(crse);
-        nt.setNote("ArraysList can be added to and items can be deleted.");
-        allNotes.addNote(nt.getNoteID(), nt.getCourse(), nt.getNote());
-        */
     }
 
     private void view() {
@@ -203,13 +193,23 @@ public class Coursework extends JFrame implements ActionListener, KeyListener {
         button = cc.makeNavigationButton("Create", "NewNote",
                 "Create a new note.",
                 "New");
-        
         toolBar.add(button);
+        
         button = cc.makeNavigationButton("closed door", "Close",
                 "Close this note.",
                 "Close");
-        
         toolBar.add(button);
+        
+        button = cc.makeNavigationButton("Edit", "EditNote",
+                "Edit this note.",
+                "Edit Note");
+        toolBar.add(button);
+        
+        button = cc.makeNavigationButton("Save", "SaveNote",
+                "Save this note.",
+                "Save Note");
+        toolBar.add(button);
+        
         toolBar.addSeparator();
         button = cc.makeNavigationButton("exit", "Exit",
                 "Exit from this program.",
@@ -275,12 +275,12 @@ public class Coursework extends JFrame implements ActionListener, KeyListener {
 
 
     private void controller() {
-        addAllNotes();
+        DisplayAllNotes();
     }
 
     private void addNote(String text) {
         allNotes.addNote(allNotes.getMaxID(), crse, text);
-        addAllNotes();
+        DisplayAllNotes();
     }
     
     private void showCrs(String text) {
@@ -303,12 +303,13 @@ public class Coursework extends JFrame implements ActionListener, KeyListener {
         return allCourses;
 
         } catch(IOException e) {
-            out.println("File Not Found");
+            courseworkItem.CreateNewCoursesFile();
+            out.println("File Not Found, Creating new one");
         }
         return allCourses;
     }
     
-    private void addAllNotes() {
+    private void DisplayAllNotes() {
         String txtNotes = "";
         
         for (Note n : allNotes.getAllNotes()) {
@@ -316,16 +317,6 @@ public class Coursework extends JFrame implements ActionListener, KeyListener {
         }
         
         txtDisplayNotes.setText(txtNotes);
+        txtDisplayNotes.setEditable(false);
     }
-    
-   /* private String getDateAndTime() {
-        String UK_DATE_FORMAT_NOW = "dd-MM-yyyy HH:mm:ss";
-        String ukDateAndTime;
-        
-        Calendar cal = Calendar.getInstance();
-        SimpleDateFormat uksdf = new SimpleDateFormat(UK_DATE_FORMAT_NOW);
-        ukDateAndTime = uksdf.format(cal.getTime());
-        return ukDateAndTime;
-    }*/
-
 }

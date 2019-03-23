@@ -23,14 +23,38 @@ public class CourseworkItem extends CommonCode {
      public ArrayList<Note> coursworkItem = new ArrayList<>();
      public int max = 0;
      
-     public String addCourse() {
+     public void CreateNewCoursesFile(){
+         try{
+             File NewCourseFile = new File("Courses.txt");
+             NewCourseFile.createNewFile();
+         }catch (IOException ex) {
+             out.println("Error");
+         }
+     }
+     
+     public void CreateCourseFolder(String CourseName){
+         String path=appDir+"\\Courses"+"\\"+CourseName;
+         new File(appDir+"/Courses/"+CourseName).mkdirs();
+         try{
+             File outputCoursework = new File(path+"\\Coursework.txt");
+             File outputRequirements = new File(path+"\\Requirements.txt");
+             File outputNotes = new File(path+"\\Notes.txt");
+             outputCoursework.createNewFile();
+             outputRequirements.createNewFile();
+             outputNotes.createNewFile();
+         }catch (IOException ex) {
+             out.println("Error while creating files");
+         }
+     }
+     
+     public String addCourse(){
          String newItem;
          newItem = JOptionPane.showInputDialog("Insert Course");
          
          try {
              FileWriter fw = new FileWriter("Courses.txt", true);
              PrintWriter pw = new PrintWriter(fw);
-             
+             CreateCourseFolder(newItem);
              pw.println(newItem);
              pw.close();  
          } catch (IOException e) {

@@ -5,6 +5,9 @@
  */
 package coursework;
 
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
 import java.util.ArrayList;
 import java.io.IOException;
 /**
@@ -28,7 +31,7 @@ class AllNotes extends CommonCode {
         System.out.println(readNotes.get(0));
         
         if ("File not found".equals(readNotes.get(0))) {
-            
+            CreateNewNotesFile();
         } else {
             
             allNotes.clear();
@@ -43,6 +46,15 @@ class AllNotes extends CommonCode {
                 allNotes.add(n);
             }
         }
+    }
+    
+    public void CreateNewNotesFile(){
+       try{
+             File NewFile = new File("Notes.txt");
+             NewFile.createNewFile();
+         }catch (IOException ex) {
+             System.out.println("Error while creating main Notes.txt file");
+         }
     }
     
     public void addNote(int maxID, String course, String note) {
@@ -71,6 +83,18 @@ class AllNotes extends CommonCode {
             System.out.println("Problem! " + path);
         }
     } 
+    
+    public void SaveEdittedNotes(String NewNotes, String Course){
+        String path= appDir+"\\Notes.txt";
+        
+        allNotes.clear();
+        maxID=0;
+        for( String note: NewNotes.split("\n")){
+            Note myNote= new Note(getMaxID(),Course,note);
+            allNotes.add(myNote);
+        }
+        writeAllNotes();
+    }
     
     public int getMaxID() {
         maxID++;
