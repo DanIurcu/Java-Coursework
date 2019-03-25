@@ -7,42 +7,36 @@ package coursework;
 
 /**
  *
- * @author Danny & Dan Iurcu
+ * @author Dan
  */
-public class Note extends CommonCode {
-    private int noteID = 0;
+public class Courseworks extends CommonCode {
+    private int courseworkID = 0;
     private String course = "";
     private String dayte = "";
     private String coursework = "";
-    private String requirement = "";
-    private String note = "";
     
-    public Note() {
+    public Courseworks() {
         
     }
     
-    public Note(int nid, String crs, String dt,String ct, String rt, String nt) {
-        setNoteID(nid);
+    public Courseworks(int nid, String crs, String dt, String nt) {
+        setCourseworkID(nid);
         setCourse(crs);
         setDayte(dt);
-        setCoursework(ct);
-        setRequirement(rt);
-        setNote(nt);
+        setCoursework(nt);
     }
     
-    public Note(int max, String crs, String ct, String rt, String nt) {
-        setNoteID(max);
+    public Courseworks(int max, String crs, String nt) {
+        setCourseworkID(max);
         setCourse(crs);
         setDayte();
-        setCoursework(ct);
-        setRequirement(rt);
-        setNote(nt);
+        setCoursework(nt);
     }
     
-    public void setNoteID(int n) {
+    public void setCourseworkID(int n) {
         int nid = n;
         // Any validation goes here.
-        noteID = nid;
+        courseworkID = nid;
     }
     
     public void setCourse(String c) {
@@ -51,9 +45,9 @@ public class Note extends CommonCode {
         course = crse;
     }
     
-    public int getNoteID() {
+    public int getCourseworkID() {
         // Any checking goes here.
-        return noteID;
+        return courseworkID;
     }
     
     public String getCourse() {
@@ -73,29 +67,13 @@ public class Note extends CommonCode {
         return dayte;
     }
     
-    public void setCoursework(String c){
-        coursework=c;
-    }
-    
-    public String getCoursework(){
-        return coursework;
-    }
-    
-    public void setRequirement(String r){
-        requirement=r;
-    }
-    
-    public String getRequirement(){
-        return requirement;
-    }
-    
-    public void setNote(String n) {
+    public void setCoursework(String n) {
         // Any validation goes here.
-        note = n;
+        coursework = n;
     }
     
-    public String getNote() {
+    public String getCoursework() {
         // Any checking goes here.
-        return note;
+        return coursework;
     }
 }

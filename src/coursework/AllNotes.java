@@ -10,6 +10,9 @@ import java.io.File;
 import java.io.FileWriter;
 import java.util.ArrayList;
 import java.io.IOException;
+import java.io.PrintWriter;
+import static java.lang.System.out;
+import javax.swing.JOptionPane;
 /**
  *
  * @author Danny & Dan Iurcu
@@ -21,66 +24,89 @@ class AllNotes extends CommonCode {
     private int maxID = 0;
     
     AllNotes() {
-        readAllNotes();
+
     }
     
-    private void readAllNotes() {
+    public void readAllNotes(ArrayList<String> Courses) {
         ArrayList<String> readNotes = new ArrayList<>();
         
-        readNotes = readTextFile(appDir + "\\Notes.txt");
-        System.out.println(readNotes.get(0));
-        
-        if ("File not found".equals(readNotes.get(0))) {
-            CreateNewNotesFile();
-        } else {
+        allNotes.clear();
+        for(String c: Courses){
+            readNotes = readTextFile(appDir+"\\Courses"+"\\"+c+"\\Notes.txt");
+            System.out.println(readNotes.get(0));
             
-            allNotes.clear();
-            for (String str : readNotes) {
-                
-                String[] tmp = str.split("\t");
-                Note n = new Note();
-                n.setNoteID(Integer.parseInt(tmp[0]));
-                n.setCourse(tmp[1]);
-                n.setDayte(tmp[2]);
-                n.setNote(tmp[3]);
-                allNotes.add(n);
+            if ("File not found".equals(readNotes.get(0))) {
+                CreateNewNotesFile(c);
+            } else {
+                for (String str : readNotes) {
+
+                    String[] tmp = str.split("\t");
+                    Note n = new Note();
+                    n.setNoteID(Integer.parseInt(tmp[0]));
+                    n.setCourse(tmp[1]);
+                    n.setDayte(tmp[2]);
+                    n.setCoursework(tmp[3]);
+                    n.setRequirement(tmp[4]);
+                    n.setNote(tmp[5]);
+                    allNotes.add(n);
+                    maxID=Integer.parseInt(tmp[0]);
+                }
             }
-        }
+        }   
     }
     
-    public void CreateNewNotesFile(){
+    public void CreateNewNotesFile(String c){
        try{
-             File NewFile = new File("Notes.txt");
+             File NewFile = new File(appDir+"\\Courses"+"\\"+c+"\\Notes.txt");
              NewFile.createNewFile();
          }catch (IOException ex) {
              System.out.println("Error while creating main Notes.txt file");
          }
     }
     
-    public void addNote(int maxID, String course, String note) {
-        Note myNote = new Note(maxID, course, note);
+    public void addNote(int maxID, String course, String coursework, String requirement, String note) {
+        Note myNote = new Note(maxID, course, coursework, requirement, note);
         allNotes.add(myNote);
-        writeAllNotes();
+        writeAllNotes(myNote);
+    }
+    
+     public void addNote(int maxID, String course, String coursework, String requirement) {
+        String newNote = "";
+        newNote=JOptionPane.showInputDialog(null,"insert Note");
+        if(!newNote.equals(null)){
+            Note myNote = new Note(maxID, course, coursework, requirement, newNote);
+            allNotes.add(myNote);
+            writeAllNotes(myNote);
+        }
+        else{
+            out.println("User has canceled the note insertion");
+        }
+        
     }
     
     public ArrayList<Note> getAllNotes() {
         return allNotes;
     }
     
-    private void writeAllNotes() {
-        String path = appDir + "\\Notes.txt";
-        ArrayList<String> writeNote = new ArrayList<>();
-        for (Note n : allNotes) {
-            String tmp = n.getNoteID() + "\t";
-            tmp += n.getCourse() + "\t";
-            tmp += n.getDayte() + "\t";
-            tmp += n.getNote();
-            writeNote.add(tmp);
-        }
+    private void writeAllNotes(Note newNote) {
+        String path = appDir+"\\Courses"+"\\"+newNote.getCourse()+"\\Notes.txt";
         try {
-            writeTextFile(path, writeNote);
+            FileWriter fw = new FileWriter(path, true);
+            PrintWriter pw = new PrintWriter(fw);
+            for (Note n : allNotes) {
+                if(n.getRequirement().equals(newNote.getRequirement())){
+                    String tmp = n.getNoteID() + "\t";
+                    tmp += n.getCourse() + "\t";
+                    tmp += n.getDayte() + "\t";
+                    tmp += n.getCoursework() + "\t";
+                    tmp += n.getRequirement() + "\t";
+                    tmp += n.getNote();
+                    pw.println(tmp);
+                }
+            }
+            pw.close();
         } catch (IOException ex) {
-            System.out.println("Problem! " + path);
+            System.out.println("Error while trying to write new note in " + path);
         }
     } 
     
@@ -90,15 +116,26 @@ class AllNotes extends CommonCode {
         allNotes.clear();
         maxID=0;
         for( String note: NewNotes.split("\n")){
-            Note myNote= new Note(getMaxID(),Course,note);
-            allNotes.add(myNote);
+           // Note myNote= new Note(getMaxID(),Course,note);
+            //allNotes.add(myNote);
         }
-        writeAllNotes();
+        //writeAllNotes();
     }
     
     public int getMaxID() {
         maxID++;
         return maxID;
+    }
+    
+    public ArrayList getFilteredNotes(String requirementName){
+        ArrayList<String> filteredRequirements =new ArrayList();
+         
+        for(Note n : allNotes){
+             if(n.getRequirement().equals(requirementName)){
+                 filteredRequirements.add(n.getNote());
+             }
+        }
+        return filteredRequirements;
     }
     
     public String searchAllNotesByKeyword(String noteList, int i, String s) {
