@@ -7,7 +7,7 @@ package coursework;
 
 /**
  *
- * @author Dan
+ * @author Dan 
  */
 public class Requirements extends CommonCode {
     private int requirementID = 0;

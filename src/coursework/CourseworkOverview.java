@@ -104,4 +104,12 @@ public class CourseworkOverview extends CommonCode { // aka Requirements
          }
          return filteredRequirements;
      }
+     
+     public void updateRequirements(String OldName,String NewName){
+        for(Requirements r: courseworkOverview){
+            if(r.getCourse().equals(OldName)){
+                r.setCourse(NewName);
+            }
+        }
+    }
 }

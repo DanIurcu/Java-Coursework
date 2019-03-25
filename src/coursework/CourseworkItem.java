@@ -133,19 +133,37 @@ public class CourseworkItem extends CommonCode {
         } catch (IOException ex) {
             ex.printStackTrace();
          }
+     DeleteCourseFolder(courseName);
      }
-     
+    
+     public void DeleteCourseFolder(String courseName){
+         String path=appDir+"\\Courses\\"+courseName;
+         File course = new File(path);
+         File[] entries = course.listFiles();
+         
+         for(File s: entries){
+                s.delete();
+        }
+         course.delete();
+     }
+    
     public String amendCourse(String courseName) {
         String inputFileName = "Courses.txt";
         String outputFileName = "tempFile.txt";
         String AmmendCourse=null;
         try {
+            File CourseFolder = new File(appDir+"\\Courses\\"+courseName);
             File inputFile = new File(inputFileName);
             File outputFile = new File(outputFileName);
    
         try (BufferedReader reader = new BufferedReader(new FileReader(inputFile));
              BufferedWriter writer = new BufferedWriter(new FileWriter(outputFile))) {
-        AmmendCourse=JOptionPane.showInputDialog("Insert new name");
+        AmmendCourse=JOptionPane.showInputDialog(null,"Insert new name");
+        File newCourseFolder = new File(appDir+"\\Courses\\"+AmmendCourse);
+            if(!CourseFolder.renameTo(newCourseFolder)){
+                    throw new IOException("Not working");
+            }
+        
         String line = null;
         while ((line = reader.readLine()) != null) {
             if (!line.equals(courseName)) {
@@ -163,6 +181,8 @@ public class CourseworkItem extends CommonCode {
         if (!outputFile.renameTo(inputFile)) {
                 throw new IOException("Could not rename " + outputFileName + " to " + inputFileName);
                 }   
+
+
     } else {
             throw new IOException("Could not delete original input file " + inputFileName);
       }
@@ -211,5 +231,13 @@ public class CourseworkItem extends CommonCode {
             }
         }
         return filteredCourseworks;
+    }
+    
+    public void updateCourseworks(String OldName,String NewName){
+        for(Courseworks c: courseworkItem){
+            if(c.getCourse().equals(OldName)){
+                c.setCourse(NewName);
+            }
+        }
     }
 }

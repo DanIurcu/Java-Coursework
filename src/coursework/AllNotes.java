@@ -93,33 +93,38 @@ class AllNotes extends CommonCode {
         try {
             FileWriter fw = new FileWriter(path, true);
             PrintWriter pw = new PrintWriter(fw);
-            for (Note n : allNotes) {
-                if(n.getRequirement().equals(newNote.getRequirement())){
-                    String tmp = n.getNoteID() + "\t";
-                    tmp += n.getCourse() + "\t";
-                    tmp += n.getDayte() + "\t";
-                    tmp += n.getCoursework() + "\t";
-                    tmp += n.getRequirement() + "\t";
-                    tmp += n.getNote();
-                    pw.println(tmp);
-                }
-            }
+            String tmp = newNote.getNoteID() + "\t";
+            tmp += newNote.getCourse() + "\t";
+            tmp += newNote.getDayte() + "\t";
+            tmp += newNote.getCoursework() + "\t";
+            tmp += newNote.getRequirement() + "\t";
+            tmp += newNote.getNote();
+            pw.println(tmp);
             pw.close();
         } catch (IOException ex) {
             System.out.println("Error while trying to write new note in " + path);
         }
     } 
     
-    public void SaveEdittedNotes(String NewNotes, String Course){
-        String path= appDir+"\\Notes.txt";
-        
-        allNotes.clear();
-        maxID=0;
+    public void SaveEdittedNotes(String Course, String Coursework, String Requirement, String NewNotes){
+        String path= appDir+"\\Courses"+"\\"+Course+"\\Notes.txt";
+        boolean notfound=true;
         for( String note: NewNotes.split("\n")){
-           // Note myNote= new Note(getMaxID(),Course,note);
-            //allNotes.add(myNote);
+           notfound=true;
+           for(Note n : allNotes){
+               if(n.getRequirement().equals(Requirement)){
+                   if(n.getNote().equals(note)){
+                        notfound=false;
+                   }
+               }
+           }
+           if(notfound){
+               Note myNote= new Note(getMaxID(),Course,Coursework,Requirement,note);
+               allNotes.add(myNote);
+               out.println(myNote.getNote().toString());
+               writeAllNotes(myNote);
+           }
         }
-        //writeAllNotes();
     }
     
     public int getMaxID() {
@@ -195,5 +200,13 @@ class AllNotes extends CommonCode {
             i++;      
         }
         return Result;
+    }
+    
+    public void updateNotes(String OldName,String NewName){
+        for(Note n: allNotes){
+            if(n.getCourse().equals(OldName)){
+                n.setCourse(NewName);
+            }
+        }
     }
 }

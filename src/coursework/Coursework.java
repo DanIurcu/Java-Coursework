@@ -56,6 +56,7 @@ public class Coursework extends JFrame implements ActionListener, KeyListener {
     JPanel pnl = new JPanel(new BorderLayout());
     JTextArea txtNewNote = new JTextArea();
     JTextArea txtDisplayNotes = new JTextArea();
+    JTextArea txtDisplayPath = new JTextArea();
     ArrayList<String> note = new ArrayList<>();
     ArrayList<String> allCourses = new ArrayList<>();
     
@@ -154,7 +155,7 @@ public class Coursework extends JFrame implements ActionListener, KeyListener {
         if ("SaveNote".equals(ae.getActionCommand())){
             txtDisplayNotes.setEditable(false);
             saveButton.setEnabled(false);
-            allNotes.SaveEdittedNotes(txtDisplayNotes.getText(),courseList.getSelectedItem().toString());
+            allNotes.SaveEdittedNotes(CourseToSaveIn,CourseworkToSaveIn,RequirementToSaveIn,txtDisplayNotes.getText().toString());
         }
         if ("Exit".equals(ae.getActionCommand())){
             System.exit(0);
@@ -171,9 +172,15 @@ public class Coursework extends JFrame implements ActionListener, KeyListener {
            courseList.removeItem(courseList.getSelectedItem());
         }
         if ("amendCourse".equals(ae.getActionCommand())) {
-            String NewName=courseworkItem.amendCourse(courseList.getSelectedItem().toString());
+            String OldName=courseList.getSelectedItem().toString();
+            String NewName=courseworkItem.amendCourse(OldName);
             courseList.removeItem(courseList.getSelectedItem());
             courseList.addItem(NewName);
+            courseworkItem.updateCourseworks(OldName,NewName);
+            courseworkOverview.updateRequirements(OldName,NewName);
+            allNotes.updateNotes(OldName,NewName);
+            updateData();
+            
         }
         if ("SearchKeyword".equals(ae.getActionCommand())){
             String lyst = allNotes.searchAllNotesByKeyword("", 0, search.getText());
@@ -352,6 +359,14 @@ public class Coursework extends JFrame implements ActionListener, KeyListener {
         toolBar.add(button);*/
         
         toolBar.addSeparator();// This forces anything after it to the right.
+       // txtDisplayPath.setFont(fnt);
+        //txtDisplayPath.setSize(100, 100);
+       // txtDisplayPath.setText("This is a test");
+       // txtDisplayPath.setEditable(false);
+       // toolBar.add(txtDisplayPath);
+        
+       // toolBar.addSeparator();
+        
         toolBar.add(Box.createHorizontalGlue());
         search.setMaximumSize(new Dimension(6900, 30));
         search.setFont(fnt);
@@ -487,5 +502,12 @@ public class Coursework extends JFrame implements ActionListener, KeyListener {
                 , JOptionPane.QUESTION_MESSAGE,null, selectionValues, initialSelection).toString();
         
         return selection;
+    }
+    
+    public void updateData(){
+        showAllCrse();
+        allNotes.readAllNotes(allCourses);
+        courseworkItem.readAllCourseworks(allCourses);
+        courseworkOverview.readAllRequirements(allCourses);
     }
 }
